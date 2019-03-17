@@ -4,7 +4,8 @@ const schema = require('./schema/schema');
 const mongoose = require('mongoose');
 const app = express();
 
-mongoose.connect('mongodb+srv://masih:zqSy4u4p@db-cluster-bvnin.mongodb.net/test?retryWrites=true')
+// [@INFO] Make sure to put correct authentication
+// mongoose.connect('mongodb+srv://masih:<password>@db-cluster-bvnin.mongodb.net/test?retryWrites=true')
 mongoose.connection.once('open', () => {
   console.log("DB connected");
 })
