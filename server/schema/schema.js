@@ -6,6 +6,7 @@ const {
   GraphQLSchema,
   GraphQLID,
   GraphQLInt,
+  GraphQLList,
 } = graphql;
 
 const books = [
@@ -30,6 +31,7 @@ const BookType = new GraphQLObjectType({
     author: {
       type: AuthorType,
       resolve(parent, args) {
+        // console.log("Book", parent);
         return authors.find((data) => parent.authorId == data.id)
       }
     }
@@ -42,6 +44,13 @@ const AuthorType = new GraphQLObjectType({
     id: {type: GraphQLID},
     name: {type: GraphQLString},
     age: {type: GraphQLInt},
+    book: {
+      type: new GraphQLList(BookType),
+      resolve(parent, args) {
+        // console.log("Author", parent);
+        return books.filter((data) => data.authorId == parent.id)
+      }
+    }
   })
 })
 
@@ -54,6 +63,12 @@ const RootQuery = new GraphQLObjectType({
       args: {id: {type: GraphQLID}},
       resolve(parent, args) {
         return books.find((data) => data.id == args.id);
+      }
+    },
+    books: {
+      type: GraphQLList(BookType),
+      resolve(parent, args) {
+        return books;
       }
     },
     author: {
